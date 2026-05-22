@@ -12,7 +12,7 @@ import datetime
 st.set_page_config(page_title="RPH Ulangkaji Fizik F4-F5", page_icon="📝", layout="wide")
 
 # LETAK API KEY HANG KAT SINI
-GOOGLE_API_KEY = "API_KEY_ANDA_DI_SINI" 
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
 
