@@ -9,15 +9,12 @@ import datetime
 # ==========================================
 # 1. SETUP & KONFIGURASI 
 # ==========================================
-st.set_page_config(page_title="RPH Ulangkaji Fizik SPM", page_icon="📝", layout="wide")
+st.set_page_config(page_title="RPH Ulang Kaji SPM Cg Azaril", page_icon="🚀", layout="wide")
 
-# AMBIL API KEY DARI SECRETS (Pastikan dah letak kat Streamlit Cloud Advanced Settings)
-try:
-    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel('gemini-2.0-flash') 
-except:
-    st.error("⚠️ API Key tidak dijumpai. Pastikan anda telah masukkan GOOGLE_API_KEY di Advanced Settings > Secrets.")
+# LETAK API KEY HANG KAT SINI (Pastikan tanda " " dikekalkan)
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"] # Masukkan API Key kau di sini
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 # ==========================================
 # 2. PANGKALAN DATA SILIBUS FIZIK KSSM (T4 & T5)
