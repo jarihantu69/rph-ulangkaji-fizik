@@ -42,7 +42,7 @@ silibus_fizik_kssm = {
 # ==========================================
 # 3. ANTARA MUKA (UI) WEB APPS
 # ==========================================
-st.title("📝 Penjana RPH Ulangkaji Fizik SPM (KSSM)")
+st.title("📝 Penjana RPH Ulangkaji Fizik SPM Cg Azaril")
 st.markdown("Isi maklumat di bawah khusus untuk kelas persediaan SPM. AI akan jana RPH berfokuskan latih tubi dan teknik menjawab.")
 
 kolom_kiri, kolom_kanan = st.columns(2)
