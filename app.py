@@ -11,7 +11,6 @@ import datetime
 # ==========================================
 st.set_page_config(page_title="Penjana RPH Fizik Cg Azaril", page_icon="🚀", layout="wide")
 
-# Menggunakan kaedah rahsia (secrets) seperti kod pertama
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
@@ -19,7 +18,6 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 # ==========================================
 # 2. PANGKALAN DATA SILIBUS FIZIK KSSM (T4 & T5)
 # ==========================================
-# Pangkalan Data untuk Mod Ulangkaji
 silibus_ulangkaji = {
     "Tingkatan 4": {
         "F4 Bab 1: Pengukuran": ["1.1 Kuantiti Fizik", "1.2 Penyiasatan Saintifik"],
@@ -40,7 +38,6 @@ silibus_ulangkaji = {
     }
 }
 
-# Pangkalan Data untuk Mod 5E
 silibus_5e = {
     "Tingkatan 4": {
         "Bab 1: Pengukuran": ["1.1 Kuantiti Fizik", "1.2 Penyiasatan Saintifik"],
@@ -77,7 +74,7 @@ st.sidebar.info("Aplikasi bersepadu Cg Azaril. Dikuasakan oleh Google Gemini AI.
 # =========================================================================================
 if pilihan_mod == "📝 Ulangkaji SPM":
     
-    st.title("📝 Penjana RPH Ulangkaji Fizik SPM (KSSM)")
+    st.title("📝 Penjana RPH Ulangkaji Fizik SPM Cg Azaril")
     st.markdown("Isi maklumat di bawah. Anda kini boleh memilih **Tingkatan 4 & 5 sekaligus** untuk kelas ulangkaji bersepadu.")
 
     kolom_kiri, kolom_kanan = st.columns(2)
@@ -150,7 +147,7 @@ if pilihan_mod == "📝 Ulangkaji SPM":
 
     st.divider()
 
-    st.subheader("⏳ Agihan Masa (Jumlah Mesti = Masa Kelas)")
+    st.subheader("⏳ Agihan Masa (Pastikan Jumlah Masa = Masa Kelas)")
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1: m_recall = st.number_input("Recall", value=10)
     with col2: m_teknik = st.number_input("Teknik Menjawab", value=20)
@@ -261,22 +258,36 @@ if pilihan_mod == "📝 Ulangkaji SPM":
         r+=1; ws.merge_cells(f"A{r}:D{r}"); ws[f"A{r}"] = " STRATEGI ULANGKAJI"
         gayakan(r, 1, f_sec, al_l, fill_section); r+=1
         
+        # Aktiviti ditukar jadi 4 saja sbb penutup letak di bawah sekali
         aktiviti = [
             (f"RECALL\n{data_input['m_recall']} Min", excel_data['recall']),
             (f"TEKNIK\n{data_input['m_teknik']} Min", excel_data['teknik']),
             (f"LATIH TUBI\n{data_input['m_latih']} Min", excel_data['latih']),
-            (f"BINCANG\n{data_input['m_bincang']} Min", excel_data['bincang']),
-            (f"PENUTUP\n{data_input['m_tutup']} Min", excel_data['tutup'])
+            (f"BINCANG\n{data_input['m_bincang']} Min", excel_data['bincang'])
         ]
         for lbl, val in aktiviti:
             ws[f"A{r}"] = lbl; ws.merge_cells(f"B{r}:D{r}"); ws[f"B{r}"] = val
-            gayakan(r, 1, f_b, al_c, fill_light)
+            gayakan(r, 1, f_b, Alignment(horizontal="center", vertical="top", wrap_text=True), fill_light)
             for c in [2,3,4]: gayakan(r, c, f_norm, al_lt)
             ws.row_dimensions[r].height = max(60, (len(str(val)) // 80 + 2) * 18)
             r+=1
 
-        ws.column_dimensions['A'].width = 18; ws.column_dimensions['B'].width = 25
-        ws.column_dimensions['C'].width = 25; ws.column_dimensions['D'].width = 25
+        # --- PENUTUP & REFLEKSI (TAMBAHAN BARU UNTUK MOD ULANGKAJI) ---
+        r+=1; ws.merge_cells(f"A{r}:D{r}"); ws[f"A{r}"] = " PENUTUP & REFLEKSI"
+        gayakan(r, 1, f_sec, al_l, fill_section); r+=1
+        
+        ws[f"A{r}"] = f"Rumusan / Penutup\n({data_input['m_tutup']} Min)"; ws.merge_cells(f"B{r}:D{r}"); ws[f"B{r}"] = excel_data['tutup']
+        gayakan(r, 1, f_b, al_lt, fill_light)
+        for c in [2,3,4]: gayakan(r, c, f_norm, al_lt)
+        ws.row_dimensions[r].height = max(45, (len(str(excel_data['tutup'])) // 80 + 2) * 18); r+=1
+        
+        ws[f"A{r}"] = "Refleksi Guru"; ws.merge_cells(f"B{r}:D{r}"); ws[f"B{r}"] = excel_data['refleksi']
+        gayakan(r, 1, f_b, al_lt, fill_light)
+        for c in [2,3,4]: gayakan(r, c, f_norm, al_lt)
+        ws.row_dimensions[r].height = max(60, (len(str(excel_data['refleksi'])) // 80 + 2) * 18)
+
+        ws.column_dimensions['A'].width = 20; ws.column_dimensions['B'].width = 25
+        ws.column_dimensions['C'].width = 25; ws.column_dimensions['D'].width = 30
         
         output = io.BytesIO(); wb.save(output)
         return output.getvalue()
@@ -353,7 +364,7 @@ elif pilihan_mod == "🚀 PdP Biasa (5E)":
 
     st.divider()
 
-    st.subheader("⏳ Agihan Masa 5E (Pastikan Jumlah = Masa Kelas)")
+    st.subheader("⏳ Agihan Masa 5E (Pastikan Jumlah Masa = Masa Kelas)")
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1: m_engage = st.number_input("Engage", value=5, min_value=1)
     with col2: m_explore = st.number_input("Explore", value=min(20, tempoh_minit//4), min_value=1)
