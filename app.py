@@ -306,7 +306,7 @@ if pilihan_mod == "📝 Ulangkaji SPM":
 elif pilihan_mod == "🚀 PdP 5E":
     
     st.title("🚀 LessonLab by Azaril PdP 5E")
-    st.markdown("Isi maklumat automatik di bawah dan biarkan AI hasilkan RPH lengkap berdasarkan KSSM.")
+    st.markdown("Isi maklumat automatik di bawah dan biarkan LessonLab hasilkan RPH anda.")
 
     kolom_kiri, kolom_kanan = st.columns(2)
 
